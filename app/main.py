@@ -1,22 +1,22 @@
 class Person:
     people = {}
 
-    def __init__(self, name: str, age: str):
+    def __init__(self, name: str, age: int):
         self.name = name
         self.age = age
+        Person.people[name] = self
 
 
 def create_person_list(people: list) -> list:
     Person.people = {}
+    [Person(person["name"], person["age"]) for person in people]
     for person in people:
-        adra = person
-        p = Person(adra["name"], adra["age"])
-        Person.people[adra["name"]] = p
-    for person in people:
-        adra = person
-        p = Person.people[adra["name"]]
-        if "wife" in adra and adra["wife"] is not None:
-            p.wife = Person.people[adra["wife"]]
-        elif "husband" in adra and adra["husband"] is not None:
-            p.husband = Person.people[adra["husband"]]
+        person_data = person
+        p = Person.people[person_data["name"]]
+        wife = person_data.get("wife")
+        if wife:
+            p.wife = Person.people[person_data["wife"]]
+        husband = person_data.get("husband")
+        if husband:
+            p.husband = Person.people[person_data["husband"]]
     return list(Person.people.values())
